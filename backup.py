@@ -3,13 +3,14 @@
 import os
 from subprocess import PIPE,Popen
 
-requirement = os.getenv("input")
-host     = '172.18.0.2'
-database = 'postgres'
-user     = 'postgres'
-schema   = 'public'
-table    = 'company'
-password = 'example'
+requirement = os.getenv("requirement")
+host        = os.getenv("host_url")
+database    = os.getenv("database_name")
+user        = os.getenv("user_name")
+password    = os.getenv("PWD")
+schema      = os.getenv("schema_name")
+table       = os.getenv("table_name")
+
 
 
 if 'only' in requirement and 'database' in requirement:
