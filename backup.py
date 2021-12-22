@@ -4,7 +4,7 @@ import os
 from subprocess import PIPE,Popen
 
 requirement = 'only database'
-host     = 'localhost'
+host     = '172.18.0.2'
 database = 'postgres'
 user     = 'postgres'
 schema   = 'public'
