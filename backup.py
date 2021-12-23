@@ -49,7 +49,7 @@ session = boto3.Session(
        aws_secret_access_key=os.getenv("AWS_SECRET"),
      )
 s3 = session.resource('s3')
-dump_files = glob.glob("/root/pg_*.dump")
+dump_files = glob.glob("pg_*.dump")
 
 for filename in dump_files:
     key = "%s/%s" % ('backup', os.path.basename(filename))
