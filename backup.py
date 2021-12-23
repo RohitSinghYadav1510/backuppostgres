@@ -21,9 +21,9 @@ def runprocess(password):
 
 if 'only' in requirement and 'database' in requirement:
     command = 'pg_dump -h {0} -U {2} -p 5432 -d {1} -Fc -f pg_{1}.dump'.format(host,database,user,schema)
-    #runprocess(password)
-    p = Popen(command, shell=True, env={**os.environ, "PGPASSWORD": password})
-    p.communicate('{}\n'.format(password))
+    runprocess(password)
+    #p = Popen(command, shell=True, env={**os.environ, "PGPASSWORD": password})
+    #p.communicate('{}\n'.format(password))
     
 elif 'schema' in requirement and 'all' in requirement:
     command = 'pg_dump -h {0} -U {2} -p 5432 -d {1} -n {1}.* -Fc -f pg_allschemas.dump'.format(host,database,user)
@@ -45,7 +45,7 @@ else:
     print("requirement is not match")
 
     
-    
+ """
 session = boto3.Session(
        aws_access_key_id=os.getenv("AWS_ACCESS"),
        aws_secret_access_key=os.getenv("AWS_SECRET"),
@@ -60,5 +60,5 @@ for filename in dump_files:
 
 
 os.system("rm pg*")
-    
+"""
     
