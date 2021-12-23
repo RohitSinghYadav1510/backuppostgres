@@ -10,7 +10,7 @@ host        = os.getenv("host_url")
 database    = os.getenv("database_name")
 user        = os.getenv("user_name")
 password    = os.getenv("PWD")
-bucketname  = os.getenv("bucket_name")
+#bucketname  = os.getenv("bucket_name")
 schema      = os.getenv("schema_name")
 table       = os.getenv("table_name")
 
