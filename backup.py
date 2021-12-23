@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
+import glob
 import os
+import boto3
 from subprocess import PIPE,Popen
 
 requirement = os.getenv("requirement")
@@ -8,6 +10,7 @@ host        = os.getenv("host_url")
 database    = os.getenv("database_name")
 user        = os.getenv("user_name")
 password    = os.getenv("PWD")
+bucketname  = os.getenv("bucket_name")
 schema      = os.getenv("schema_name")
 table       = os.getenv("table_name")
 
@@ -39,3 +42,21 @@ elif 'only' in requirement and 'table' in requirement:
 else:
     print("requirement is not match")
 
+    
+    
+session = boto3.Session(
+       aws_access_key_id=os.getenv("AWS_ACCESS"),
+       aws_secret_access_key=os.getenv("AWS_SECRET"),
+     )
+s3 = session.resource('s3')
+dump_files = glob.glob("/root/pg_*.dump")
+
+for filename in dump_files:
+    key = "%s/%s" % ('backup', os.path.basename(filename))
+    print("Putting %s as %s" % (filename,key))
+    s3.meta.client.upload_file(filename, bucketname, key)
+
+
+os.system("rm pg*")
+    
+    
