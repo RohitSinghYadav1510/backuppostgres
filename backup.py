@@ -14,6 +14,8 @@ password    = os.getenv("PWD")
 schema      = os.getenv("schema_name")
 table       = os.getenv("table_name")
 
+os.system("rm pg*")
+
 def runprocess(password):
     p = Popen(command, shell=True, env={**os.environ, "PGPASSWORD": password})
     return p.communicate('{}\n'.format(password))
