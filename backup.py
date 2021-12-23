@@ -16,7 +16,7 @@ table       = os.getenv("table_name")
 
 def runprocess(password):
     p = Popen(command, shell=True, env={**os.environ, "PGPASSWORD": password})
-    p.communicate('{}\n'.format(password))
+    return p.communicate('{}\n'.format(password))
   
 
 if 'only' in requirement and 'database' in requirement:
