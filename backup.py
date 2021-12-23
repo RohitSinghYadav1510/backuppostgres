@@ -5,14 +5,14 @@ import os
 import boto3
 from subprocess import PIPE,Popen
 
-requirement = "only database" #os.getenv("requirement")
-host        = "172.18.0.2" #os.getenv("host_url")
-database    = "postgres"  #os.getenv("database_name")
-user        = "postgres" #os.getenv("user_name")
+requirement = os.getenv("requirement")
+host        = os.getenv("host_url")
+database    = os.getenv("database_name")
+user        = os.getenv("user_name")
 password    = "example" #os.getenv("PWD")
+schema      = os.getenv("schema_name")
+table       = os.getenv("table_name")
 #bucketname  = os.getenv("bucket_name")
-schema      = "public" #os.getenv("schema_name")
-table       = "company" #os.getenv("table_name")
 
 os.system("rm pg*")
 
