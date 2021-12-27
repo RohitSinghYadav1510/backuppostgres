@@ -9,7 +9,7 @@ requirement = os.getenv("requirement")
 host        = os.getenv("host_url")
 database    = os.getenv("database_name")
 user        = os.getenv("user_name")
-password    = os.getenv("database_passwd")
+password    = "example" #os.getenv("database_passwd")
 schema      = os.getenv("schema_name")
 table       = os.getenv("table_name")
 bucketname  = os.getenv("bucket_name")
@@ -60,6 +60,6 @@ for filename in dump_files:
     s3.meta.client.upload_file(filename, bucketname, key)
 
 
-os.system("rm pg*")
+#os.system("rm pg*")
 
     
