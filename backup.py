@@ -16,7 +16,7 @@ bucketname  = os.getenv("bucket_name")
 
 os.system("rm pg*")
 
-def authenticate(password):
+def passwdpro(password):
 
     p = Popen(command, shell=True, env={**os.environ, "PGPASSWORD": password})
     p.communicate('{}\n'.format(password))
@@ -24,23 +24,23 @@ def authenticate(password):
 
 if 'only' in requirement and 'database' in requirement:
     command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -Fc -f pg_Onlydatabase.dump'.format(host,database,user)
-    authenticate(password)
+    passwdpro(password)
 
 elif 'all' in requirement and 'schema' in requirement:
     command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -n {1}.* -Fc -f pg_allschemas.dump'.format(host,database,user)
-    authenticate(password)
+    passwdpro(password)
 
 elif 'only' in requirement and 'schema' in requirement:
     command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -n {3} -Fc -f pg_Onlyschema.dump'.format(host,database,user,schema)
-    authenticate(password)
+    passwdpro(password)
 
 elif 'all' in requirement and 'table' in requirement:
     command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.* -Fc -f pg_allTables.dump'.format(host,database,user,schema)
-    authenticate(password)
+    passwdpro(password)
 
 elif 'only' in requirement and 'table' in requirement:
     command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.{4} -Fc -f pg_Onlytable_{4}.dump'.format(host,database,user,schema,table)
-    authenticate(password)
+    passwdpro(password)
 
 else:
     print("requirement is not match")
