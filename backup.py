@@ -16,36 +16,37 @@ bucketname  = os.getenv("bucket_name")
 
 os.system("rm pg*")
 
-def runprocess(password):
-  p = Popen(command, shell=True, env={**os.environ, "PGPASSWORD": password})
-  return p.communicate('{}\n'.format(password))
-  
+def authenticate(password):
+
+    p = Popen(command, shell=True, env={**os.environ, "PGPASSWORD": password})
+    p.communicate('{}\n'.format(password))
+
 
 if 'only' in requirement and 'database' in requirement:
-    command = 'pg_dump -h {0} -U {2} -p 5432 -d {1} -Fc -f pg_{1}.dump'.format(host,database,user,schema)
-    runprocess(password)
-    
-elif 'schema' in requirement and 'all' in requirement:
-    command = 'pg_dump -h {0} -U {2} -p 5432 -d {1} -n {1}.* -Fc -f pg_allschemas.dump'.format(host,database,user)
-    runprocess(password)
-    
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -Fc -f pg_Onlydatabase.dump'.format(host,database,user)
+    authenticate(password)
+
+elif 'all' in requirement and 'schema' in requirement:
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -n {1}.* -Fc -f pg_allschemas.dump'.format(host,database,user)
+    authenticate(password)
+
 elif 'only' in requirement and 'schema' in requirement:
-    command = 'pg_dump -h {0} -U {2} -p 5432 -d {1} -n {3} -Fc -f pg_{3}_schema.dump'.format(host,database,user,schema)
-    runprocess(password)
-    
-elif 'table' in requirement and 'all' in requirement:
-    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.* -Fc -f pg_{3}_allTable.dump'.format(host,database,user,schema)
-    runprocess(password)
-    
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -n {3} -Fc -f pg_Onlyschema.dump'.format(host,database,user,schema)
+    authenticate(password)
+
+elif 'all' in requirement and 'table' in requirement:
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.* -Fc -f pg_allTables.dump'.format(host,database,user,schema)
+    authenticate(password)
+
 elif 'only' in requirement and 'table' in requirement:
-    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.{4} -Fc -f pg_{3}_{4}.dump'.format(host,database,user,schema,table)
-    runprocess(password)
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.{4} -Fc -f pg_Onlytable_{4}.dump'.format(host,database,user,schema,table)
+    authenticate(password)
 
 else:
     print("requirement is not match")
 
-    
 
+    
 session = boto3.Session(
        aws_access_key_id=os.getenv("AWS_ACCESS"),
        aws_secret_access_key=os.getenv("AWS_SECRET"),
