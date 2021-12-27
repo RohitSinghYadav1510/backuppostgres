@@ -57,7 +57,7 @@ session = boto3.Session(
        aws_secret_access_key=os.getenv("AWS_SECRET"),
      )
 
-#assign resources name to session
+#assign resource name to session
 s3 = session.resource('s3')
 dump_files = glob.glob("pg_*.dump")
 
