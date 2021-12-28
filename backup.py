@@ -14,7 +14,7 @@ password    = os.getenv("database_passwd")
 schema      = os.getenv("schema_name")
 table       = os.getenv("table_name")
 bucketname  = os.getenv("bucket_name")
-
+dt="$(date +'%d_%m_%Y_%H_%M_%S')"
 
 #remove all existing backup file from current directory
 os.system("rm pg*")
@@ -26,29 +26,30 @@ def passwdpro(password):
     p.communicate('{}\n'.format(password))
 
 # if "only database" string available in requirement then this conditon will run otherwise move on elif condition
+
 if 'only database' in requirement:
-    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -Fc -f pg_Onlydatabase.dump'.format(host,database,user)
-    passwdpro(password)
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -Fc -f pg_{1}_{3}.dump'.format(host,database,user,dt)
+    authenticate(password)
 
 elif 'all schema' in requirement:
-    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -n {1}.* -Fc -f pg_allschemas.dump'.format(host,database,user)
-    passwdpro(password)
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -n {1}.* -Fc -f pg_{1}_{3}.dump'.format(host,database,user,dt)
+    authenticate(password)
 
 elif 'only schema' in requirement:
-    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -n {3} -Fc -f pg_Onlyschema.dump'.format(host,database,user,schema)
-    passwdpro(password)
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -n {3} -Fc -f pg_{3}_{4}.dump'.format(host,database,user,schema,dt)
+    authenticate(password)
 
 elif 'all table' in requirement:
-    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.* -Fc -f pg_allTables.dump'.format(host,database,user,schema)
-    passwdpro(password)
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.* -Fc -f pg_{3}_{4}.dump'.format(host,database,user,schema,dt)
+    authenticate(password)
 
 elif 'only table' in requirement:
-    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.{4} -Fc -f pg_Onlytable_{4}.dump'.format(host,database,user,schema,table)
-    passwdpro(password)
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.{4} -Fc -f pg_{3}_{4}.dump'.format(host,database,user,schema,table,dt)
+    authenticate(password)
 
- # if condition is not match then else part will run
 else:
     print("requirement is not match")
+
 
 
 # make connection with AWS
