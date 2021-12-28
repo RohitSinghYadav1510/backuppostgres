@@ -44,7 +44,7 @@ elif 'all table' in requirement:
     authenticate(password)
 
 elif 'only table' in requirement:
-    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.{4} -Fc -f pg_{3}_{4}.dump'.format(host,database,user,schema,table,dt)
+    command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.{4} -Fc -f pg_{4}_{5}.dump'.format(host,database,user,schema,table,dt)
     authenticate(password)
 
 else:
