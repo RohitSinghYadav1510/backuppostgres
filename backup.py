@@ -3,6 +3,7 @@
 import glob
 import os
 import boto3
+import re
 from subprocess import PIPE,Popen
 
 #taking input from teamcity environment
@@ -14,39 +15,43 @@ password    = os.getenv("database_passwd")
 schema      = os.getenv("schema_name")
 table       = os.getenv("table_name")
 bucketname  = os.getenv("bucket_name")
-dt="$(date +'%d_%m_%Y_%H_%M_%S')"
+dt = "$(date +'%d-%m-%Y-%H:%M:%S')"
 
 #remove all existing backup file from current directory
 os.system("rm pg*")
 
 #To take the backup you need to first authenticate the database
-def passwdpro(password):
+def authenticate(password):
 
     p = Popen(command, shell=True, env={**os.environ, "PGPASSWORD": password})
     p.communicate('{}\n'.format(password))
 
-# if "only database" string available in requirement then this conditon will run otherwise move on elif condition
+# if first word "only" and last word "database" are match in requirement then this conditon will run otherwise move on elif condition
 
-if 'only database' in requirement:
+if re.search("^only.*database$", requirement):
     command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -Fc -f pg_{1}_{3}.dump'.format(host,database,user,dt)
     authenticate(password)
+    
+# if first word "all" and last word "schema" are match in requirement then this conditon will run otherwise move on elif condition
 
-elif 'all schema' in requirement:
+elif re.search("^all.*schema$", requirement):
     command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -n {1}.* -Fc -f pg_{1}_{3}.dump'.format(host,database,user,dt)
     authenticate(password)
 
-elif 'only schema' in requirement:
+elif re.search("^only.*schema$", requirement):
     command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -n {3} -Fc -f pg_{3}_{4}.dump'.format(host,database,user,schema,dt)
     authenticate(password)
 
-elif 'all table' in requirement:
+elif re.search("^all.*table$", requirement):
     command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.* -Fc -f pg_{3}_{4}.dump'.format(host,database,user,schema,dt)
     authenticate(password)
 
-elif 'only table' in requirement:
+elif re.search("^only.*table$", requirement):
     command = 'pg_dump -h {0} -d {1} -U {2} -p 5432 -t {3}.{4} -Fc -f pg_{4}_{5}.dump'.format(host,database,user,schema,table,dt)
     authenticate(password)
 
+    
+# if nothing is match then else part will run
 else:
     print("requirement is not match")
 
