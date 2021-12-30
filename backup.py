@@ -4,7 +4,7 @@ import glob
 import os
 import boto3
 import re
-from subprocess import PIPE,Popen
+from subprocess import Popen
 
 #taking input from teamcity environment
 requirement = os.getenv("requirement")
