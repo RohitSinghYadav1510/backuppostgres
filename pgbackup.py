@@ -28,7 +28,7 @@ ct = datetime.now()
 dt = '-'.join((str(ct.year), str(ct.month), str(ct.day), str(ct.hour), str(ct.minute), str(ct.second)))
 dt_dir = '-'.join((str(ct.year), str(ct.month), str(ct.day)))
 
-def authenticate(password):
+def authenticate(password: str) -> str:
     comm = shlex.split(command)
     p = subprocess.Popen(comm, env={**os.environ, "PGPASSWORD": password})
     p.communicate('{}\n'.format(password))
