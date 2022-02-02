@@ -29,8 +29,8 @@ dt = '-'.join((str(ct.year), str(ct.month), str(ct.day), str(ct.hour), str(ct.mi
 dt_dir = '-'.join((str(ct.year), str(ct.month), str(ct.day)))
 
 def authenticate(password):
-    cmd = shlex.split(command)
-    p = Popen(cmd, env={**os.environ, "PGPASSWORD": password})
+    comm = shlex.split(command)
+    p = subprocess.Popen(comm, env={**os.environ, "PGPASSWORD": password})
     p.communicate('{}\n'.format(password))
 
 #making connection to fetch schemas
